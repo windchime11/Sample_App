@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Ruby on Rails Tutorial Sample App | <%=@title%></title>
+</head>
+<body>
+<h1>This About page is written by JZ</h1>
+<p>===================================</p>
+</body>
+</html>
