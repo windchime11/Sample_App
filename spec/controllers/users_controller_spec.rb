@@ -97,6 +97,12 @@ describe UsersController do
         post :create, :user =>@attr
         flash[:success].should =~ /welcome/i
       end
+
+      it "should let user sign in" do
+        post :create, :user => @attr
+        controller.should be_signed_in
+      end
+
    end
   end
 end
