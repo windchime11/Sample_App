@@ -1,0 +1,1 @@
+<h><% = @user_all.each do |user| <p>user.name</p> end %></h>

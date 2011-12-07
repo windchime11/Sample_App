@@ -105,3 +105,12 @@ td.sidebar{
     border: 1px solid #999;
     margin-bottom: -15px;
 }
+
+.field_with_errors{
+margin-top :10px;
+padding: 2px;
+display:table;
+}
+.field_with_errors label{
+color: red;
+}
