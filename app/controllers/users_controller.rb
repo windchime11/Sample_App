@@ -1,7 +1,14 @@
 class UsersController < ApplicationController
+  # authenticate is called before edit and update action
+  before_filter :authenticate, :only => [:edit, :update, :index]
+  before_filter :correct_user, :only => [:edit, :update]
+  # verify_admin is called before destroy action
+  before_filter :verify_admin, :only => [:destroy]
+
   def new
     @user = User.new
     @title = "Sign Up"
+    @button_name = "Submit"
   end
 
   def show 
@@ -11,6 +18,7 @@ class UsersController < ApplicationController
 
   def index
     @user_all = User.all
+    @users = User.paginate(:page => params[:page])
   end
 
   def create
@@ -27,4 +35,59 @@ class UsersController < ApplicationController
     end
   end
 
+  #
+  #modified 10.14
+  def edit
+    @title = "Edit"
+    @button_name = "Update"
+  end
+
+  #
+  #modified 10.14
+  def update
+    if @user.update_attributes(params[:user])
+      flash[:success] = "Profile Updated"
+      redirect_to @user
+    else
+      flash[:error] = "Failed to Update. Try Again"
+      @title = "Edit users"
+      render 'edit'
+    end
+  end
+
+  def destroy
+     c_user = User.find(params[:id])    
+     u_name = c_user.name
+     c_user.destroy
+    flash[:success] = "User #{@u_name} has been deleted."
+    redirect_to users_path
+  end
+
+  private
+  
+      #signed_in? method is defined in app/helpers/sessions_helper.rb
+      #deny_access method is also defined in app/helpers/sessions_helper.rb 
+      #listing 10.11
+      #one method can not have two redirect_to
+      def authenticate
+        deny_access unless signed_in?
+      end
+
+      #current_user? is defined in app/helpers/sessions_helper.rb
+      def correct_user
+        @user = User.find(params[:id])
+        redirect_to(root_path) unless current_user?(@user)
+      end
+
+      def verify_admin
+       if current_user == nil
+          redirect_to(signin_path)
+       else
+         if !current_user.admin? 
+          flash[:error] = "You are not authorized to delete users."
+          redirect_to(users_path)
+        end
+       end
+     end
 end
+    

@@ -1,11 +1,17 @@
 require 'spec_helper'
 
+#Test for User model. Different from tests for User controller
+#
 describe User do
+
+  #This is the overarching setting. @attr is defined to be a valid
+  #user's attributes.
   before(:each) do
     @attr = {:name => "Example User", :email => "joo@yooo.com",
              :password => "XET23jew$", :password_confirmation => "XET23jew$"}
   end
 
+  #Create 
   it "should create new instance given valid structure" do
     User.create!(@attr)
   end
@@ -67,6 +73,7 @@ describe User do
     User.new(@attr.merge(:password => example_long_password, :password_confirmation => example_long_password)).should_not be_valid
   end  
 
+  #<Password Encrption
   describe "password encryption" do
     
     before(:each) do
@@ -111,5 +118,31 @@ describe User do
 
     end
   end
+  #Password encryption>
+
+  #<Admin attribute
+  
+  describe "admin attributes" do
+
+    before(:each) do
+      @user = User.create(@attr)
+    end
+
+    it "should have admin attribute" do
+      @user.should respond_to(:admin)
+    end
+
+    #this uses @user.admin? method
+    it "should not be an admin by default" do
+      @user.should_not be_admin
+    end
+
+    it "should be able to be converted to admin" do
+      #what is toggle???
+      @user.toggle!(:admin)
+      @user.should be_admin
+    end
+    #Admin attribute>
+    end
 
 end

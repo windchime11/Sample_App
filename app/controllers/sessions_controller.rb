@@ -11,7 +11,8 @@ end
       render 'new'
     else
       sign_in user
-      redirect_to user
+      # Listing 10.18
+      redirect_back_or(user)
     end
   end
 
