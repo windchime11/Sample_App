@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   before_filter :correct_user, :only => [:edit, :update]
   # verify_admin is called before destroy action
   before_filter :verify_admin, :only => [:destroy]
+  before_filter :already_signed_in, :only => [:new, :create]
 
   def new
     @user = User.new
@@ -56,10 +57,9 @@ class UsersController < ApplicationController
   end
 
   def destroy
-     c_user = User.find(params[:id])    
-     u_name = c_user.name
-     c_user.destroy
-    flash[:success] = "User #{@u_name} has been deleted."
+     u_name = @c_user.name
+     @c_user.destroy
+    flash[:success] = "User #{u_name} has been deleted."
     redirect_to users_path
   end
 
@@ -79,15 +79,30 @@ class UsersController < ApplicationController
         redirect_to(root_path) unless current_user?(@user)
       end
 
+      # exercise 10.6.5
       def verify_admin
+       @c_user = User.find(params[:id])
        if current_user == nil
-          redirect_to(signin_path)
+          redirect_to signin_path
        else
          if !current_user.admin? 
           flash[:error] = "You are not authorized to delete users."
-          redirect_to(users_path)
+          redirect_to users_path
+         else 
+           if current_user == @c_user
+             redirect_to root_path
+           end
         end
        end
      end
+
+     #This method for restricting signed in user from using 'new'
+     #and create
+     def already_signed_in
+       if current_user != nil
+         redirect_to(root_path)
+       end
+     end
+
 end
     

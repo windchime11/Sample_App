@@ -33,7 +33,7 @@ describe User do
   end
 
   it "should approve valid email address" do
-    emails = ["abc123@gmail.com", "ew_faf12@gwe12.org"]
+    emails = ["abcedf@gmail.com", "ew_faf12@gwe12.org"]
     emails.each do |address|
       valid_email_user = User.new(@attr.merge(:email => address))
       valid_email_user.should be_valid

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe UsersController do
   render_views
 
-  # Test for showing user begins
+  #<Test for showing user
   describe "GET 'show'" do
     
     before(:each) do
@@ -36,7 +36,7 @@ describe UsersController do
       response.should have_selector("h1>img",:class => "gravatar")
     end
   end
-  # Test for showing user ends
+  #Test for showing user>
 
   # <Test for new user page 
   describe "GET 'new'" do
@@ -50,6 +50,14 @@ describe UsersController do
       response.should have_selector 'title', :content => "Sign Up"
     end
 
+    #signed in ones
+    it "should not let signed_in ones do it" do
+      @user = Factory(:user)
+      test_sign_in(@user)
+      get 'new'
+      response.should redirect_to(root_path)
+    end
+    
   end
   # Test for new user page>
 
@@ -109,8 +117,14 @@ describe UsersController do
         post :create, :user => @attr
         controller.should be_signed_in
       end
+      
+      it "should not let signed_in ones do it" do
+        @user = Factory(:user)
+        test_sign_in(@user)
+        post :create, :user =>@attr
+        response.should redirect_to(root_path)
+      end
    end
-
   end
   #Test for create new user>
 
@@ -288,47 +302,53 @@ describe UsersController do
   #Test for index action>
 
 
-    #<Test for destroy action inside user controller
-    describe "DELETE 'destroy'" do
-      before(:each) do 
-        @user = Factory(:user)
-      end
+  #<Test for destroy action inside user controller
+  describe "DELETE 'destroy'" do
+    before(:each) do 
+      @user = Factory(:user)
+    end
 
-      describe "non-signed in user" do
-        it "should deny access" do
-          delete :destroy, :id => @user
-          response.should redirect_to(signin_path)
-        end
+    describe "non-signed in user" do
+      it "should deny access" do
+        delete :destroy, :id => @user
+        response.should redirect_to(signin_path)
       end
+    end
       
-      describe "signed in but non admin" do
-        it "should deny access" do
-          test_sign_in(@user)
-          delete :destroy, :id => @user
-          response.should redirect_to(users_path)
-        end
+    describe "signed in but non admin" do
+      it "should deny access" do
+        test_sign_in(@user)
+        delete :destroy, :id => @user
+        response.should redirect_to(users_path)
+      end
+    end
+
+    describe "signed in as admin" do
+        
+      before(:each) do
+        #admin is not accessible from application code
+        #but spec test is not bound by that
+        @admin = Factory(:user, :email => "admin@mymail.com", :admin => true)
+        test_sign_in(@admin)
       end
 
-      describe "signed in as admin" do
-        
-        before(:each) do
-          #admin is not accessible from application code
-          #but spec test is not bound by that
-          @admin = Factory(:user, :email => "admin@mymail.com", :admin => true)
-          test_sign_in(@admin)
-        end
-
-        it "should destroy the user" do
-          lambda do
-          delete :destroy, :id => @user 
-          end.should change(User, :count).by(-1)
-        end
-        
-        it "should direct to user page afterwards" do
-          delete :destroy, :id => @user
-          response.should redirect_to(users_path)
-        end
+      it "should destroy the user" do
+        lambda do
+        delete :destroy, :id => @user 
+        end.should change(User, :count).by(-1)
       end
-   end
-   #Test for destroy action insider user controller>
+        
+      it "should direct to user page afterwards" do
+        delete :destroy, :id => @user
+        response.should redirect_to(users_path)
+      end
+
+      #admin can not delete itself
+      it "should direct to user page afterwards" do
+        delete :destroy, :id => @admin
+        response.should redirect_to(root_path)
+      end
+    end
+  end
+  #Test for destroy action insider user controller>
 end
