@@ -1,8 +1,8 @@
 <h1><%= "Total #{pluralize(@user_all.count,"user")} registered"%></h1>
 <%= will_paginate%>
 <ul class="users">
-#render @users will cause Rails to look for a partial
-#called _user.html.erb and iterate through them
+<!--#render @users will cause Rails to look for a partial
+#called _user.html.erb and iterate through them-->
 <%= render @users%>
 </ul>
 <%= will_paginate%>
