@@ -4,8 +4,9 @@ class User < ActiveRecord::Base
   attr_accessible :name, :email,:password,:password_confirmation
 
   has_many :microposts
-
-  scope :s_name, where(:name => "Fictional User")
+  
+  #Experiment with scope
+  scope :s_name, where('id > ?', 20)
 
   email_allowed = /\A[+.\w\d\-\_]+@[a-z\d]+\.[a-z]+\z/i  
 
