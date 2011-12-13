@@ -1,8 +1,5 @@
 <h1><%= "Total #{pluralize(@user_all.count,"user")} registered"%></h1>
 <%= will_paginate%>
-<% if @s_user.count > 0 %>
-<h1><%= "Count is: #{@s_user.count}, First one has name : #{@s_user.first.name}"%></h1>
-<% end %>
 <ul class="users">
 <%= render @users%>
 </ul>
