@@ -18,6 +18,7 @@ class UsersController < ApplicationController
   end
 
   def index
+    @s_user = User.s_name
     @user_all = User.all
     @users = User.paginate(:page => params[:page])
   end

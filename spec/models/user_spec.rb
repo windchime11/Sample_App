@@ -121,7 +121,6 @@ describe User do
   #Password encryption>
 
   #<Admin attribute
-  
   describe "admin attributes" do
 
     before(:each) do
@@ -142,7 +141,30 @@ describe User do
       @user.toggle!(:admin)
       @user.should be_admin
     end
-    #Admin attribute>
+  end
+  #Admin attribute>
+
+  #<Microposts attributes
+  describe "Micropost association" do
+    before(:each) do
+      @user = User.create!(@attr)
+      @mp1 = Factory(:micropost, :user => @user, :created_at => 1.day.ago)
+      @mp2 = Factory(:micropost, :user => @user, :created_at => 1.hour.ago)
     end
+
+    it "should have a microposts attributes" do
+      @user.should respond_to(:microposts)
+    end
+
+    #Check both the order of posts and @user.microposts is an array of 
+    #microposts
+    it "should have microposts in right order" do
+      @user.microposts.should == [@mp2, @mp1]
+    end
+
+  end
+  #Microposts attributes>
+
+  
 
 end
