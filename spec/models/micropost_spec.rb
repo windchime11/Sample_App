@@ -15,7 +15,7 @@ describe Micropost do
     @user.microposts.create!(@attr)
   end
 
-  #<Test for table associations
+  #<Test for associations with users
   describe "user associations" do
 
     #The way to create micropost without providing user_id
@@ -35,6 +35,36 @@ describe Micropost do
     end
 
   end
-  #Test for table associations>
+  #Test for associations with users>
+
+  #<Test for micropost's own attributes
+  describe "validation" do
+    
+    it "should require a user id" do
+      Micropost.new(@attr).should_not be_valid
+    end
+    
+    it "should require nonblank content" do
+      ##@user has microposts.build(@attr) method due to has_many 
+      #:microposts association
+      #this .build is essentially equivalent to Micropost.new except
+      #it automatically sets the micropost's user_id to @user.id
+      @user.microposts.build(:content => "").should_not be_valid
+    end
+
+    it "should reject long content" do
+      @user.microposts.build(:content => "a" * 141).should_not be_valid
+    end
+
+    it "should require nonblank title" do
+      #here, to test :title, I have to set :content to a nonblank value
+      # otherwise, it is always invalid
+      @user.microposts.build(:title => "", :content => "abc").should_not be_valid
+    end
+
+
+  end
+
+  #Test for micropost's own attributes>
 
 end

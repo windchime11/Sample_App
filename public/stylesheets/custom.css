@@ -122,3 +122,40 @@ ul.users{
 .users li{
 list-style: none;
 }
+
+h1.micropost {
+margin-bottom:0.3em;
+}
+
+table.micropost {
+margin-top: 1em;
+}
+
+table.micropost tr{
+height: 70px;
+}
+
+table.micropost tr td.micropost{
+border-top: 1px solid #ccc;
+vertical-align: top;
+padding-top: 10px;
+}
+
+span.timestamp{
+display: block;
+font-size: 85%;
+color: #330099;
+}
+
+span.title{
+display: block;
+font-size: 120%;
+color: #B80000;
+}
+
+span.content{
+display: block;
+font-size: 100%;
+color: #006633;
+}
+

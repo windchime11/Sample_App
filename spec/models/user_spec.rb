@@ -162,6 +162,13 @@ describe User do
       @user.microposts.should == [@mp2, @mp1]
     end
 
+    #Whey user is destroyed, microposts are gone as well
+    it "destroy users cascading" do
+      @user.destroy
+      [@mp1, @mp2].each do |mp|
+        Micropost.find_by_id(mp.id).should be_nil
+      end
+    end
   end
   #Microposts attributes>
 
