@@ -1,0 +1,6 @@
+<% unless @feed_item.empty?%>
+<table>
+
+</table>
+<%= will_paginate @feed_items%>
+<% end%>

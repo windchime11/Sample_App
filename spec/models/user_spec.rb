@@ -162,9 +162,32 @@ describe User do
       @user.microposts.should == [@mp2, @mp1]
     end
 
+    #Whey user is destroyed, microposts are gone as well
+    it "destroy users cascading" do
+      @user.destroy
+      [@mp1, @mp2].each do |mp|
+        Micropost.find_by_id(mp.id).should be_nil
+      end
+    end
+
+    #feed method
+    describe "status feed" do
+      it "should have a feed method" do
+        @user.should respond_to(:feed)
+      end
+
+      it "should include the user's microposts" do
+        @user.feed.include?(@mp1).should be_true
+        @user.feed.include?(@mp1).should be_true
+      end
+
+      it "should not include another user's microposts" do
+        @user.feed.count.should == 2
+      end
+    end
+
   end
   #Microposts attributes>
-
   
 
 end

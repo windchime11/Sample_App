@@ -35,6 +35,22 @@ describe UsersController do
       # The following test check if the CSS class of h1 img tag is gravatar.
       response.should have_selector("h1>img",:class => "gravatar")
     end
+
+    #<Test for showing user's microposts
+    it "should show microposts" do
+      @user_1 = Factory(:user, :email => "eawfe@geaw.com")
+      @mp1 = Factory(:micropost, :user => @user_1, :content => "This is post 1", 
+                     :title => "Post 1")
+      @mp2 = Factory(:micropost, :user => @user_1, :content => "This is post 2",
+                     :title => "Post 2")
+      get :show, :id => @user_1
+      response.should have_selector("span.content", :content => @mp1.content)
+      response.should have_selector("span.content", :content => @mp2.content)
+
+    end
+    #Test for showing user's microposts>
+
+
   end
   #Test for showing user>
 
@@ -351,4 +367,5 @@ describe UsersController do
     end
   end
   #Test for destroy action insider user controller>
+  
 end
