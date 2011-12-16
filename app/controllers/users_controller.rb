@@ -13,7 +13,9 @@ class UsersController < ApplicationController
   end
 
   def show 
+    #listing 11.18 last modified
     @user = User.find(params[:id])
+    @user_nil = @user.nil?
     @title = @user.name
     @microposts = @user.microposts.paginate(:page => params[:page])
   end
@@ -67,13 +69,6 @@ class UsersController < ApplicationController
 
   private
   
-      #signed_in? method is defined in app/helpers/sessions_helper.rb
-      #deny_access method is also defined in app/helpers/sessions_helper.rb 
-      #listing 10.11
-      #one method can not have two redirect_to
-      def authenticate
-        deny_access unless signed_in?
-      end
 
       #current_user? is defined in app/helpers/sessions_helper.rb
       def correct_user

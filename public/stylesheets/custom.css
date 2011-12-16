@@ -159,3 +159,12 @@ font-size: 100%;
 color: #006633;
 }
 
+div span.user_name
+{
+color: #347C17;
+}
+div span.microposts{
+display:table;
+font: 1.25em Arial, sans-serif;
+color: #996633;
+}

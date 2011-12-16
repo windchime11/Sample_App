@@ -1,5 +1,22 @@
+<% if signed_in? %>
+  <table class = "front" summary = "For signed in users">
+    <tr>
+      <td class = "main">
+	<h1 class = "micropost">What's up?</h1>
+	<%= render 'shared/micropost_form'%>
+	<%= render 'shared/feed'%>
+      </td>
+
+      <td class = "sidebar round">
+	<%= render 'shared/user_info'%>
+      </td>
+    </tr>
+  </table>
+<% else %>
+
 <h1>This is written by JZ</h1>
 <p>You are visiting JZ's first website, developed using Ruby 
 on Rails 3</p>
 
 <%= link_to "Sign Up to Become a Member Now!", signup_path, :class => "signup_button round" %>
+<% end%>

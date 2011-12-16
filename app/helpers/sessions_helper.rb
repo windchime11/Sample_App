@@ -41,6 +41,15 @@ module SessionsHelper
     user == current_user
   end
 
+  #signed_in? method is defined in app/helpers/sessions_helper.rb
+  #deny_access method is also defined in app/helpers/sessions_helper.rb 
+  #listing 10.11
+  #one method can not have two redirect_to
+  def authenticate
+    deny_access unless signed_in?
+  end
+
+
   private 
 
     def user_from_remember_token

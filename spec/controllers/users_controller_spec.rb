@@ -38,11 +38,12 @@ describe UsersController do
 
     #<Test for showing user's microposts
     it "should show microposts" do
-      @mp1 = Factory(:micropost, :user => @user, :content => "This is post 1", 
+      @user_1 = Factory(:user, :email => "eawfe@geaw.com")
+      @mp1 = Factory(:micropost, :user => @user_1, :content => "This is post 1", 
                      :title => "Post 1")
-      @mp2 = Factory(:micropost, :user => @user, :content => "This is post 2",
+      @mp2 = Factory(:micropost, :user => @user_1, :content => "This is post 2",
                      :title => "Post 2")
-      get :show, :id => @user
+      get :show, :id => @user_1
       response.should have_selector("span.content", :content => @mp1.content)
       response.should have_selector("span.content", :content => @mp2.content)
 
