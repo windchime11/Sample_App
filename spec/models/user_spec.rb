@@ -188,6 +188,53 @@ describe User do
 
   end
   #Microposts attributes>
-  
+
+#<Relationship attributes
+  describe "Relationships" do
+
+    before(:each) do
+      @user = User.create!(@attr)
+      @followed = Factory(:user)
+    end
+
+    it "should have relationship attributes" do
+      @user.should respond_to(:relationships)
+    end
+
+    it "should have a following" do
+      @user.should respond_to(:following)
+    end
+
+    it "should have a followers method" do
+      @user.should respond_to(:followers)
+    end
+
+    #This test both follow! and following? methods
+    it "should allow follow! and have a following? methods" do
+      @user.follow!(@followed)
+      @user.should be_following(@followed)
+    end
+
+    it "should include the followed user in the following array" do
+      @user.follow!(@followed)
+      @user.following.include?(@followed).should be_true
+    end
+
+    it "should allow unfollow!" do
+      @user.follow!(@followed)
+      @user.unfollow!(@followed)
+      @user.should_not be_following(@followed)
+    end
+
+    it "should have :reverse_relationships" do
+      @user.should respond_to(:reverse_relationships)
+    end
+
+    it "should show followers" do
+      @user.follow!(@followed)
+      @followed.followers.include?(@user).should be_true
+    end
+  end
+  #Relationship attributes>  
 
 end

@@ -4,6 +4,17 @@ class User < ActiveRecord::Base
   attr_accessible :name, :email,:password,:password_confirmation
 
   has_many :microposts, :dependent => :destroy
+  has_many :relationships, :dependent => :destroy,
+                           :foreign_key => :follower_id
+  has_many :following, :dependent => :destroy,
+                       :through => :relationships,
+                       :source => :followed
+  has_many :reverse_relationships, :dependent => :destroy,
+                       :foreign_key => "followed_id",
+                       :class_name => "Relationship"
+  has_many :followers, :dependent => :destroy, 
+                       :through => :reverse_relationships,
+                       :source => :follower
   
   #Experiment with scope
   scope :s_name, where('id > ?', 20)
@@ -40,6 +51,21 @@ class User < ActiveRecord::Base
   def feed
     return Micropost.where("user_id = ?",id)
   end
+
+
+  def following?(user)
+    #why find_by_xyz_id only need user as arg?
+    relationships.find_by_followed_id(user)
+  end
+
+  def follow!(user)
+    relationships.create!(:followed_id => user.id)
+  end
+
+  def unfollow!(user)
+    relationships.find_by_followed_id(user).destroy
+  end
+
 
   private 
   
