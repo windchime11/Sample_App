@@ -82,7 +82,6 @@ class UsersController < ApplicationController
   end
 
   private
-  
 
       #current_user? is defined in app/helpers/sessions_helper.rb
       def correct_user

@@ -2,6 +2,8 @@ class MicropostsController < ApplicationController
   before_filter :authenticate, :only => [:create, :destroy]
   before_filter :authorized_author, :only =>[:destroy]
 
+
+
   def create
     @micropost = current_user.microposts.build(params[:micropost])
     if @micropost.save
@@ -26,5 +28,4 @@ class MicropostsController < ApplicationController
        redirect_to root_path unless (current_user == @micropost.user ||
                                      current_user.admin?)
      end
-
 end

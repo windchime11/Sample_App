@@ -67,4 +67,32 @@ describe Micropost do
 
   #Test for micropost's own attributes>
 
+  #<Test for Micropost.from_users_followed_by(user)
+  describe "Micropost.from_users_followed_by" do
+    before(:each) do
+      @followed_user = Factory(:user, :email => Factory.next(:email))
+      @user.follow!(@followed_user)
+      @not_followed_user = Factory(:user, :email => Factory.next(:email))
+      @mp1 = @followed_user.microposts.create!(:title => "post 1", :content => "aefawewfwa")
+      @mp2 = @not_followed_user.microposts.create!(:title => "post 2", :content => "aefawewfwa") 
+      @mp3 = @user.microposts.create!(:title => "Own post", :content => "fwefe af awf fa")
+    end
+
+    it "should include posts from followed user" do
+      Micropost.from_users_followed_by(@user).include?(@mp1).should be_true
+    end
+
+    it "should include posts from itself" do
+      Micropost.from_users_followed_by(@user).include?(@mp3).should be_true
+    end
+
+
+    it "should not include posts from unfollowed user" do
+      Micropost.from_users_followed_by(@user).include?(@mp2).should_not be_true
+    end
+
+  end
+  #Test for Micropost.from_users_followed_by(user)>
+
+
 end
