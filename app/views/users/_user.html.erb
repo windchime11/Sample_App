@@ -1,6 +1,8 @@
+<% @user = user%>
 <li>
 <%= link_to user.name, user %>
 <% if current_user.admin? && current_user != user %>
 <%= link_to " [Delete]", user, :method => :delete, :confirm => "Are you sure?" %>
+<div><%= render 'shared/follow_form' %></div>
 <% end %>
 </li>
