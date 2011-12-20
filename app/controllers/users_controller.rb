@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   # authenticate is called before edit and update action
-  before_filter :authenticate, :only => [:edit, :update, :index]
-  before_filter :correct_user, :only => [:edit, :update]
+  before_filter :authenticate, :only => [:edit, :update, :index, :following, :followers]
+  before_filter :correct_user, :only => [:edit, :update, :following, :followers]
   # verify_admin is called before destroy action
   before_filter :verify_admin, :only => [:destroy]
   before_filter :already_signed_in, :only => [:new, :create]
@@ -65,6 +65,20 @@ class UsersController < ApplicationController
      @c_user.destroy
     flash[:success] = "User #{u_name} has been deleted."
     redirect_to users_path
+  end
+
+  def following
+    @title = "is following:"
+    @follow_page = @user.following.paginate(:page => params[:page])
+  end
+
+  def followers
+    @title = "is followed by:"
+    #this line below means that @user has been set in authenticate 
+    #method and can be access in views
+#   @user = User.where("id = 3").first
+    @follow_page = @user.followers.paginate(:page => params[:page])
+    render 'following'
   end
 
   private

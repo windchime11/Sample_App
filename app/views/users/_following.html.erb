@@ -1,0 +1,29 @@
+<table summary="following/followers information">
+  <tr>
+    <td class="main">
+      <h1>
+	<%= @user.name%>
+	<%= gravatar_helper @user %>
+	<%= @title %>
+      </h1>
+      <% unless @follow_page.empty? %>
+        <table class="following" summary="Followings">
+	  <%= render @follow_page %>
+	</table>
+	<%= will_paginate @follow_page %>
+	<% end %>
+	<% @user = current_user%>
+    </td>
+    <td class="sidebar round">
+      <strong>Name</strong><%=@user.name%> <br />
+      <strong>URL</strong> <%= link_to user_path(@user), @user %>
+      <strong>Microposts</strong><%= @user.microposts.count%>
+      <%=render 'shared/stats_info/'%>
+      <% unless @follow_page.empty? %>
+         <% @follow_page.each do |user| %>
+	 <%= link_to user.name, user%>
+	 <% end %>
+      <% end %>
+    </td>
+  </tr>
+</table>
